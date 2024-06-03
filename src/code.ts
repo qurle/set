@@ -1,4 +1,8 @@
+// Imports
+import { width } from './size/width'
 // Constants
+const properties = [width]
+
 const confirmMsgs = ["Done!", "You got it!", "Aye!", "Is that all?", "My job here is done.", "Gotcha!", "It wasn't hard.", "Got it! What's next?"]
 const renameMsgs = ["Cleaned", "Affected", "Made it with", "Fixed"]
 const idleMsgs = ["All great, already", "Nothing to do, everything's good", "Any layers to affect? Can't see it", "Nothing to do, your layers are great"]
@@ -12,9 +16,28 @@ let count: number = 0
 figma.on("currentpagechange", cancel)
 
 // Main + Elements Check
-working = true
-selection = figma.currentPage.selection
-run()
+figma.on('run', async ({ parameters }: RunEvent) => {
+  working = true
+  selection = figma.currentPage.selection
+  run()
+})
+
+figma.parameters.on(
+  'input',
+  async ({ key, query, result }: ParameterInputEvent) => {
+    switch (key) {
+      case 'property': {
+        result.setSuggestions(properties.map((el, index) => ({
+          name: camelCaseToWords(el.name),
+          data: index
+        })).filter(s => s.name.toLowerCase().includes(query.toLowerCase())))
+        break
+      }
+      default:
+        return
+    }
+  }
+)
 
 async function run() {
   // Anything selected?
@@ -29,6 +52,11 @@ async function run() {
 // Action for selected nodes
 async function mainFunction(node: SceneNode | PageNode) {
   count++
+}
+
+function camelCaseToWords(s: string): string {
+  const result = s.replace(/([A-Z])/g, ' $1')
+  return result
 }
 
 // Ending the work

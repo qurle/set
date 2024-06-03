@@ -1,5 +1,5 @@
 {
-  "name": "plugin-name",
+  "name": "set",
   "version": "1.0.0",
   "description": "insert your description",
   "main": "code.js",
@@ -7,7 +7,7 @@
     "build": "webpack",
     "watch": "npm run build -- --watch"
   },
-  "author": "your precious name",
+  "author": "nick qurle",
   "license": "",
   "devDependencies": {
     "@figma/plugin-typings": "^1.87.0",

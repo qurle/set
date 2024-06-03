@@ -1,17 +1,20 @@
 {
-  "name": "<Plugin name>",
+  "name": "Set",
   "id": "<000000000000000000>",
   "api": "1.0.0",
   "main": "dist/code.js",
   "editorType": [
     "figma"
   ],
-  "relaunchButtons": [
+  "networkAccess": {
+    "allowedDomains": [
+      "none"
+    ]
+  },
+  "parameters": [
     {
-      "command": "relaunch",
-      "name": "<do the stuff again>",
-      "multipleSelection": true
+      "name": "property",
+      "key": "property"
     }
-  ],
-  "ui": "src/ui.html"
+  ]
 }
