@@ -15,6 +15,11 @@
     {
       "name": "property",
       "key": "property"
+    },
+    {
+      "name": "value",
+      "key": "value"
     }
-  ]
+  ],
+  "documentAccess": "dynamic-page"
 }

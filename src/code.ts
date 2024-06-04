@@ -1,7 +1,7 @@
 // Imports
 import { width } from './size/width'
 // Constants
-const properties = [width]
+const functions = [width]
 
 const confirmMsgs = ["Done!", "You got it!", "Aye!", "Is that all?", "My job here is done.", "Gotcha!", "It wasn't hard.", "Got it! What's next?"]
 const renameMsgs = ["Cleaned", "Affected", "Made it with", "Fixed"]
@@ -17,9 +17,7 @@ figma.on("currentpagechange", cancel)
 
 // Main + Elements Check
 figma.on('run', async ({ parameters }: RunEvent) => {
-  working = true
-  selection = figma.currentPage.selection
-  run()
+  run(parameters.property, parameters.value)
 })
 
 figma.parameters.on(
@@ -27,7 +25,7 @@ figma.parameters.on(
   async ({ key, query, result }: ParameterInputEvent) => {
     switch (key) {
       case 'property': {
-        result.setSuggestions(properties.map((el, index) => ({
+        result.setSuggestions(functions.map((el, index) => ({
           name: camelCaseToWords(el.name),
           data: index
         })).filter(s => s.name.toLowerCase().includes(query.toLowerCase())))
@@ -39,13 +37,15 @@ figma.parameters.on(
   }
 )
 
-async function run() {
+async function run(property, value) {
+  selection = figma.currentPage.selection
   // Anything selected?
   if (selection.length)
     for (const node of selection)
-      await mainFunction(node)
-  else
-    await mainFunction(figma.currentPage)
+      await functions[property](node, value)
+  else {
+    notify('No layers selected')
+  }
   finish()
 }
 
